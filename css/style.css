@@ -1,4 +1,27 @@
-table#items th {
+#register .leftcol {
+    text-align: right;
+    margin-right: 3px;
+    font-size: 14px;
+}
+#register .rightcol input {
+    width: 195px;
+}
+#register .smallfont {
+    font-size: 11px;
+    line-height: 13px;
+}
+#register input.inputc {
+    line-height: 15px;
+}
+#returnMessage {
+    font-weight: bold;
+}
+
+.removed {
+    display: none;
+}
+
+table#signatures th {
     font-weight: bold;
 }
 
@@ -22,7 +45,6 @@ table#items th {
 }
 .pagination a {
     cursor: pointer;
-    color: #050331 !important;
 }
 
 .pagination a:hover{
@@ -36,36 +58,28 @@ table#items th {
     color:#fff;
 }
 
-.farleft {
-    margin-left: -9999px !important;
-    height: 10px;
+.row.liftup {
+    margin-top: -50px;
 }
-.removed {
-    display: none;
+
+.smallfont {
+    font-size: 10px;
+    line-height: 1.1 ! important;
 }
-i.fa-times {
-    color: red;
+.medfont {
+    font-size: 12px;
+    line-height: 1.2 ! important;
 }
-#item {
-    opacity: 0;
+.rightcol input.smallinput, .rightcol select.smallinput {
+    padding: 5px !important;
+    width: 100%;
 }
-#letters {
-    margin: 0 auto 5px auto;
-    width: 920px;
+.rightcol input, .rightcol select {
+    width: 50%;
 }
-.letter {
-    display: inline-block;
-    border: grey 1px solid;
-    width: 31px;
-    text-align: center;
-    padding: 2px 5px;
-    margin-right: 2px;
-    background-color: #f1f3f3;
-    border-radius: 8px;
+.leftcol {
+    vertical-align: middle;
 }
-.wider {
-    width: 50px;
-}
-.selected {
-    background-color: #ffcccc;
+.fs-signatures-comments {
+    line-height: 1.1;
 }
