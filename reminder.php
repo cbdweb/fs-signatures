@@ -21,7 +21,7 @@ function fs_reminder() {
         $todayDT = new DateTime();
         $daysago = $createdDT->diff( $todayDT );
         $drafts++;
-        if ( $daysago->days > 3 ) {
+        if ( $daysago->d > 3 ) {
             $content = str_replace( 
                     array( '{secret}',
                         ),
