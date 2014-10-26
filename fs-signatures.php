@@ -7,11 +7,23 @@
  * Author: Nik Dow, CBDWeb
  * License: GPL2
  */
-defined('ABSPATH') or die("No script kiddies please!");
 /*
  * Signatures - custom post type and facilities to support the big petition
  */
+defined('ABSPATH') or die("No script kiddies please!");
+/*
+ * reminders
+ */
 require_once plugin_dir_path ( __FILE__ ) . 'reminder.php';
+register_activation_hook(__FILE__, 'activate_reminders' );
+add_action ( 'fs_signatures_reminders', 'fs_reminder' ); // function fs_reminder defined in included file reminder.php
+function activate_reminders() {
+    wp_schedule_event( current_time( 'timestamp' ), 'daily', 'fs_signatures_reminders' );
+}
+register_deactivation_hook(__FILE__, 'deactivate_reminders' );
+function deactivate_reminders() {
+    wp_clear_scheduled_hook ( 'fs_signatures_reminders' );
+}
 /*
  * Signatures AJAX calls
  */

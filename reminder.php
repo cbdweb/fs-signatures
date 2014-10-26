@@ -1,25 +1,4 @@
 <?php
-/*
-    function my_additional_schedules($schedules) {
-        // interval in seconds
-        $schedules['every2min'] = array('interval' => 2*60, 'display' => 'Every two minutes');
-        return $schedules;
-    }
-    add_filter('cron_schedules', 'my_additional_schedules');  */
-    $dt = new DateTime();
-    $dt->setTimezone(new DateTimeZone( get_option('timezone_string') ) );
-    update_option('fs_reminder_runs', $dt->format('Y-m-d H:i') );
- if ( ! wp_get_schedule ( 'fs_reminder' ) ) {
-    update_option('fs_reminder_not_in_schedule', $dt->format('Y-m-d H:i') );
-    wp_clear_scheduled_hook('fs_reminder');
-    $dt = new DateTime();
-    $dt->setTimezone( new DateTimeZone ( get_option('timezone_string') ) );
-    $str = $dt->format( 'Y-m-d 08:00:00' );
-    $dt->createFromFormat('Y-m-d H:i:s', $str, new DateTimeZone( get_option('timezone_string' ) ) );
-    wp_schedule_event(current_time('timestamp'), 'daily', 'fs_reminder');
-    add_action( 'fs_reminder', 'fs_reminder' );
-}
-
 function fs_reminder() {
     $dt = new DateTime();
     $dt->setTimezone(new DateTimeZone( get_option('timezone_string') ) );
@@ -33,7 +12,7 @@ function fs_reminder() {
     $reminders = $wpdb->get_results ( $query, OBJECT );
     $count = 0;
     $drafts = 0;
-    $testing = false;
+    $testing = strpos( site_url(), 'localhost' )!==false;
     $template = get_option( 'reminder-template' );
     $sender_name = get_option('reminder-sender-name');
     $sender_address = get_option('reminder-sender-address');
@@ -137,6 +116,20 @@ function reminder_options() {
                 </p>
 
             </form>
+            <P>Last reminder job ran: 
+                <?=get_option('fs_reminder_running');?>
+            </p>
+            <p>
+                Number of reminders sent:
+                <?=get_option('fs_reminder_count');?>
+            </p>
+            <p>
+                Number of drafts seen: 
+                <?=get_option('fs_reminder_drafts');?>
+            </p>
+            <P>
+                Test mode is <?=strpos( site_url(), 'localhost' )===false ? "off" : "on";?>
+            </p>
         </div>
     <?php
 }
