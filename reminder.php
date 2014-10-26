@@ -41,7 +41,7 @@ function fs_reminder() {
         }
     }
     update_option( 'fs_reminder_count', $count );
-    update_option('fs_reminder_drafts', $drafts );
+    update_option( 'fs_reminder_drafts', $drafts );
 }
 
 add_action( 'admin_menu', 'reminder_menu' );

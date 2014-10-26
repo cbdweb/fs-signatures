@@ -23,6 +23,7 @@ function activate_reminders() {
 register_deactivation_hook(__FILE__, 'deactivate_reminders' );
 function deactivate_reminders() {
     wp_clear_scheduled_hook ( 'fs_signatures_reminders' );
+    wp_clear_scheduled_hook('fs_reminders');
 }
 /*
  * Signatures AJAX calls
@@ -431,7 +432,7 @@ function save_fs_signature(){
     if(isset ( $_POST['reminder_sent'] ) ) {
         update_post_meta ( $post->ID, "reminder_sent", 1 );
     } else {
-        update_post_meta ( $post->ID, "reminder_sent", 0 );
+        delete_post_meta ( $post->ID, "reminder_sent" );
     }
 }
 
