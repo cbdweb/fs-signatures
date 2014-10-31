@@ -80,6 +80,6 @@ table#signatures th {
 .leftcol {
     vertical-align: middle;
 }
-#signatures {
+.fs-signatures-comments, #signatures tr > td:first-child {
     line-height: 1.1;
 }
