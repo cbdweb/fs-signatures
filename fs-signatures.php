@@ -279,7 +279,7 @@ function fs_signature_edit_columns($columns) {
         "fs_col_registered" => "Registered",
         "fs_col_campaign" => "Campaign",
         "fs_col_referrer" => "Referrer",
-        "fs_col_moderate" => "Moderated",
+        "fs_col_date_signed" => "Date<br/>signed",
         "comment" => "Comment",
     );
     return $columns;
@@ -319,10 +319,11 @@ function fs_signature_custom_columns($column) {
                 echo "&nbsp;";
             }
             break;
-        case "fs_col_moderate":
-            echo $custom["fs_signature_moderate"][0];
+        case "fs_col_date_signed":
+            echo get_the_date('d/m');
             break;
         case "comment":
+            if( $custom["fs_signature_moderate"][0] === "y" ) echo "(moderated) ";
             echo substr( $post->post_excerpt, 0, 100 );
             break;
     }
