@@ -279,6 +279,7 @@ function fs_signature_edit_columns($columns) {
         "fs_col_registered" => "Registered",
         "fs_col_campaign" => "Campaign",
         "fs_col_referrer" => "Referrer",
+        "fs_col_moderate" => "", // not shown but needed for quick edit - CSS sets col width to 0
         "fs_col_date_signed" => "Date<br/>created",
         "comment" => "Comment",
     );
@@ -1139,7 +1140,6 @@ function fs_signatures_quickedit( $column_name, $post_type ) {
     if ( $post_type !== "fs_signature") {
         return;
     }
-    
     static $printNonce = TRUE;
     if ( $printNonce ) {
         $printNonce = FALSE;
