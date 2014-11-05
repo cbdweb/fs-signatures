@@ -279,7 +279,7 @@ function fs_signature_edit_columns($columns) {
         "fs_col_registered" => "Registered",
         "fs_col_campaign" => "Campaign",
         "fs_col_referrer" => "Referrer",
-        "fs_col_date_signed" => "Date<br/>signed",
+        "fs_col_date_signed" => "Date<br/>created",
         "comment" => "Comment",
     );
     return $columns;
@@ -320,7 +320,8 @@ function fs_signature_custom_columns($column) {
             }
             break;
         case "fs_col_date_signed":
-            echo get_the_date('d/m');
+            $dt = DateTime::createFromFormat("Y-m-d H:i:s", $post->post_date, new DateTimeZone( get_option('timezone_string') ) );
+            echo $dt->format('d/m');
             break;
         case "comment":
             if( $custom["fs_signature_moderate"][0] === "y" ) echo "(moderated) ";
