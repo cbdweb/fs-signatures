@@ -829,7 +829,9 @@ function fs_signature_confirm () {
                     if( $sig->post_title !== "" && $custom['fs_signature_country'][0] ) {
                         $found = true;
                         $sig->post_status = "private";
-                        if( ! $update ) update_post_meta( $post_id, 'fs_signature_registered', date('Y-m-d') );
+                        $dt = new DateTime();
+                        $dt->setTimezone( new DateTimeZone( get_option( 'timezone_string') ) );
+                        if( ! $update ) update_post_meta( $post_id, 'fs_signature_registered', $dt->format('Y-m-d') );
                         wp_update_post ( $sig );
                     }
                 }
