@@ -279,7 +279,8 @@ function fs_signature_edit_columns($columns) {
         "fs_col_registered" => "Registered",
         "fs_col_campaign" => "Campaign",
         "fs_col_referrer" => "Referrer",
-        "fs_col_date_signed" => "Date<br/>signed",
+        "fs_col_moderate" => "", // not shown but needed for quick edit - CSS sets col width to 0
+        "fs_col_date_signed" => "Date<br/>created",
         "comment" => "Comment",
     );
     return $columns;
@@ -320,7 +321,8 @@ function fs_signature_custom_columns($column) {
             }
             break;
         case "fs_col_date_signed":
-            echo get_the_date('d/m');
+            $dt = DateTime::createFromFormat("Y-m-d H:i:s", $post->post_date, new DateTimeZone( get_option('timezone_string') ) );
+            echo $dt->format('d/m');
             break;
         case "comment":
             if( $custom["fs_signature_moderate"][0] === "y" ) echo "(moderated) ";
@@ -828,7 +830,9 @@ function fs_signature_confirm () {
                     if( $sig->post_title !== "" && $custom['fs_signature_country'][0] ) {
                         $found = true;
                         $sig->post_status = "private";
-                        if( ! $update ) update_post_meta( $post_id, 'fs_signature_registered', date('Y-m-d') );
+                        $dt = new DateTime();
+                        $dt->setTimezone( new DateTimeZone( get_option( 'timezone_string') ) );
+                        if( ! $update ) update_post_meta( $post_id, 'fs_signature_registered', $dt->format('Y-m-d') );
                         wp_update_post ( $sig );
                     }
                 }
@@ -1136,7 +1140,6 @@ function fs_signatures_quickedit( $column_name, $post_type ) {
     if ( $post_type !== "fs_signature") {
         return;
     }
-    
     static $printNonce = TRUE;
     if ( $printNonce ) {
         $printNonce = FALSE;
