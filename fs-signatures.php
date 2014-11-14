@@ -133,7 +133,7 @@ function fs_newSignature() {
     $fs_signature_country = $_POST['fs_signature_country'];
     $fs_signature_state = $_POST['fs_signature_state'];
     $areYouThere = $_POST['areYouThere'];
-    $excerpt = $_POST['excerpt'];
+    $excerpt = stripslashes($_POST['excerpt']);
     if (
         ! isset( $_POST['fs_nonce'] ) 
         || ! wp_verify_nonce( $_POST['fs_nonce'], 'fs_new_sig' ) 
