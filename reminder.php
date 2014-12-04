@@ -43,7 +43,9 @@ function fs_reminder() {
     update_option( 'fs_reminder_count', $count );
     update_option( 'fs_reminder_drafts', $drafts );
 }
-
+/*
+ * Signatures options menu item and options page
+ */
 add_action( 'admin_menu', 'reminder_menu' );
 
 /** Step 1. */
