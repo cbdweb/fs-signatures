@@ -961,11 +961,45 @@ function fs_signature_signatures (  ) {
     
     $rows_per_page = 15;
     $sigs = get_sigs( 0, $rows_per_page ); // first lot of sigs are loaded with the page
+    
+    /* get sub-totals */
+    global $wpdb;
+    $NZ = $wpdb->get_row(
+            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\" 
+                WHERE post_type=\"fs_signature\" AND m.meta_value=\"NZ\" AND p.`post_status`=\"private\""
+            );
+    $AU = $wpdb->get_row(
+            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\" 
+                WHERE post_type=\"fs_signature\" AND m.meta_value=\"AU\" AND p.`post_status`=\"private\""
+            );
+    $totals = array(
+        'New Zealand' => $NZ->count,
+        'Australia' => $AU->count,
+    );
+    $states = fs_states();
+    foreach ( $states as $abb=>$title ) {
+        $total = $wpdb->get_row(
+            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\"
+                LEFT JOIN wpfreepp_postmeta s ON p.ID=s.post_id AND s.`meta_key`=\"fs_signature_state\"
+                WHERE post_type=\"fs_signature\" AND m.meta_value=\"AU\" AND s.meta_value=\"" . $abb . "\" AND p.`post_status`=\"private\""
+        );
+        $totals[$title] = $total->count;
+    }
     ob_start();
     ?>
+        
     <div class="row" ng-app="signaturesApp" ng-controller="signaturesCtrl">
+            <UL id="webticker">
+                <?php
+                foreach ( $totals as $title => $count ) {
+                    ?><LI><?=$title?>: <?=$count?></LI><?php
+                }
+                ?>
+            </UL>
+        
         <script type="text/javascript">
             _sigs = <?=json_encode($sigs)?>;
+            _totals = <?=json_encode($totals)?>;
             <?php
             global $wpdb;
             $query = $wpdb->prepare('select count(*) from ' . $wpdb->posts . ' where post_type="fs_signature" and post_status="private"', '' );
