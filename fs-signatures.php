@@ -941,6 +941,8 @@ add_action('init', 'register_signature_signatures_script');
 add_action('wp_footer', 'enqueue_signature_signatures_script');
 function register_signature_signatures_script() {
     wp_register_script( 'angular', "//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js", 'jquery' );
+//        wp_register_script( 'angular', "//localhost/skimobile/websrc/assets/deca1dd9/javascript/lib/angular-1.2.12.js", 'jquery' );
+
     wp_register_script( 'angular-animate', "//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-animate.min.js", array( 'angular', 'jquery' ) );
     wp_register_script('signatures',  plugins_url( 'js/signatures.js' , __FILE__ ), array('jquery', 'angular') );
 }
