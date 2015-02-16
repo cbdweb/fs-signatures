@@ -827,7 +827,7 @@ function fs_signature_confirm () {
                 if($sig->post_type === 'fs_signature' && ( $sig->post_status==="draft" || $sig->post_status==="private" ) ) {
                     $custom = get_post_custom( $post_id );
                     $update = $sig->post_status === "private";
-                    if( $sig->post_title !== "" && $custom['fs_signature_country'][0] ) {
+                    if( $custom['fs_signature_country'][0] ) {
                         $found = true;
                         $sig->post_status = "private";
                         $dt = new DateTime();
