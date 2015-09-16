@@ -918,23 +918,23 @@ function fs_signature_confirm () {
 }
 add_shortcode('confirm', 'fs_signature_confirm' );
 function fs_signatures_conversion() { ?>
-<!-- Google Code for new registration Conversion Page -->
+    <!-- Google Code for signature Conversion Page -->
         <script type="text/javascript">
         /* <![CDATA[ */
         var google_conversion_id = 1000718227;
         var google_conversion_language = "en";
-        var google_conversion_format = "1";
+        var google_conversion_format = "3";
         var google_conversion_color = "ffffff";
-        var google_conversion_label = "ga-OCK2vplYQk_-W3QM";
+        var google_conversion_label = "UPP5CJz5414Qk_-W3QM";
         var google_remarketing_only = false;
         /* ]]> */
         </script>
         <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
         </script>
         <noscript>
-            <div style="display:inline;">
-            <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1000718227/?label=ga-OCK2vplYQk_-W3QM&amp;guid=ON&amp;script=0"/>
-            </div>
+        <div style="display:inline;">
+            <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1000718227/?label=UPP5CJz5414Qk_-W3QM&amp;guid=ON&amp;script=0"/>
+        </div>
         </noscript>
 <?php }        
 /*
