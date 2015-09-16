@@ -910,8 +910,15 @@ function fs_signature_confirm () {
         </form>
     <?php } ?>
     <P><a href="<?=get_site_url();?>/signatures">See who has signed</a></p>
-    <?php if ( ! $update ) { ?>
-        <!-- Google Code for new registration Conversion Page -->
+    <?php if ( ! $update ) {
+       add_action( 'wp_footer', 'fs_signatures_conversion' );
+    }
+    
+    return ob_get_clean();
+}
+add_shortcode('confirm', 'fs_signature_confirm' );
+function fs_signatures_conversion() { ?>
+<!-- Google Code for new registration Conversion Page -->
         <script type="text/javascript">
         /* <![CDATA[ */
         var google_conversion_id = 1000718227;
@@ -929,11 +936,7 @@ function fs_signature_confirm () {
             <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1000718227/?label=ga-OCK2vplYQk_-W3QM&amp;guid=ON&amp;script=0"/>
             </div>
         </noscript>
-    <?php }
-    
-    return ob_get_clean();
-}
-add_shortcode('confirm', 'fs_signature_confirm' );
+<?php }        
 /*
  * Shortcode for displaying signatures, paginated
  */
