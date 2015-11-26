@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-    $('#name').focus();
+//    $('#name').focus();
     $.each(['', '_popup'], function(index, str) {
         $('#country'+str).bind('change', function () {
         if($('#country'+str).val()==="AU") {
