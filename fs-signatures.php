@@ -1038,9 +1038,6 @@ function fs_signature_signatures (  ) {
         </table>
         <div id="ajax-loading" ng-class="{'farleft':!showLoading}"><img src="<?php echo get_site_url();?>/wp-includes/js/thickbox/loadingAnimation.gif" ng-cloak></div>
 
-        <div>
-            <a href="<?=get_site_url();?>/sign-the-petition-to-reform-helmet-law/">Click here to sign this petition</a>
-        </div>
         <?php
         // pagination adapted from http://sgwordpress.com/teaches/how-to-add-wordpress-pagination-without-a-plugin/                    
         ?>
