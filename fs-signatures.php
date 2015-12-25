@@ -320,6 +320,9 @@ function fs_signature_custom_columns($column) {
                 echo "&nbsp;";
             }
             break;
+        case "fs_col_moderate":
+            echo "<input type='checkbox' value='y' " . ( $custom["fs_signature_moderate"][0]==="y" ? " CHECKED" : "" ) . " />";
+            break;
         case "fs_col_date_signed":
             $dt = DateTime::createFromFormat("Y-m-d H:i:s", $post->post_date, new DateTimeZone( get_option('timezone_string') ) );
             echo $dt->format('d/m');
@@ -356,7 +359,7 @@ function fs_signature_meta() {
     ?>
     <div class="fs-meta">
         <ul>
-            <li><label>Comment moderated?</label><input name="fs_signature_moderate" value="<?php echo $meta_moderate; ?>" /> (enter "y" or blank)</li>
+            <li><label>Comment moderated?</label><input type="checkbox" name="fs_signature_moderate" <?php echo $meta_moderate=="y" ? " CHECKED" : ""; ?> value="y" /></li>
             <li><label>Country</label>
                 <select name="fs_signature_country">
                     <option value="">Please select</option>

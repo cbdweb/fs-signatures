@@ -20,10 +20,10 @@
 			var $post_row = $( '#post-' + $post_id );
 
 			// get the data
-			var $moderate = $( '.column-fs_col_moderate', $post_row ).html();
+			var $moderate = !! $( '.column-fs_col_moderate>input', $post_row ).prop('checked');
 
 			// populate the data
-			$( 'input[name="moderated"]', $edit_row ).prop('checked', $moderate==="y");
+			$( 'input[name="moderated"]', $edit_row ).prop('checked', $moderate );
 		}
 	};
 
