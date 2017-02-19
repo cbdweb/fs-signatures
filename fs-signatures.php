@@ -1153,7 +1153,7 @@ add_action( 'admin_enqueue_scripts', 'fs_signatures_enqueue_scripts' );
 /*
  * set cookies for referrer and campaign
  */
-add_action( 'wp_head', 'fs_signature_head_cookies' );
+add_action( 'init', 'fs_signature_head_cookies' );
 function fs_signature_head_cookies() {
     if(isset($_COOKIE['referrer'])) {
         $referrer = $_COOKIE['referrer'];
