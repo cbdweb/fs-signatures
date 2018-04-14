@@ -1299,3 +1299,14 @@ function cf_search_distinct( $where ) {
     return $where;
 }
 add_filter( 'posts_distinct', 'cf_search_distinct' );
+/*
+ * make email address optional on admin update of user record.
+ * N.B. this doesn't belong in signatures plugin because it is related to users not signatures
+ * but didn't want to start a new plugin
+ * reason for allowing admin to save without email address is because of the practice of emailing expired members
+ * if an expired member doesn't want our emails then have to remove their email address.
+ */
+function wpse_22754_empty_email_error( $arg ) {
+    if ( !empty( $arg->errors['empty_email'] ) ) unset( $arg->errors['empty_email'] );
+}
+add_action( 'user_profile_update_errors', 'wpse_22754_empty_email_error' );
