@@ -1130,7 +1130,7 @@ function fs_page_sign ( $atts ) {
     </form>
 <?php return ob_get_clean();
 }
-add_shortcode('signature', fs_page_sign );
+add_shortcode('signature', "fs_page_sign" );
 
 /*
  * change the label for title (for this custom post) from Title to Name
