@@ -1,5 +1,7 @@
 jQuery(document).ready(function($){
 //    $('#name').focus();
+    setReferrerCookie();
+
     $.each(['', '_popup'], function(index, str) {
         $('#country'+str).bind('change', function () {
         if($('#country'+str).val()==="AU") {
@@ -55,7 +57,7 @@ jQuery(document).ready(function($){
 });
 
 (function($) {
-      
+
 
     function duplicate(responseJSON) {
       alert('sorry we already have that email address');
@@ -68,8 +70,18 @@ jQuery(document).ready(function($){
 
 })(jQuery);
 
-function checkEmail(inputvalue){	
+function checkEmail(inputvalue){
 var pattern=/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
 var bool = pattern.test(inputvalue);
 return bool;
+}
+function setReferrerCookie(){
+    if( document.cookie.replace(/(?:(?:^|.*;\s*)referrer\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true" ){
+        document.cookie = "referrer=" + document.referrer;
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const campaign = urlParams.get('campaign');
+    if( document.cookie.replace(/(?:(?:^|.*;\s*)campaign\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true" ){
+        document.cookie = "campaign=" + campaign;
+    }
 }

@@ -35,7 +35,7 @@ add_action( 'wp_ajax_nopriv_reconfirmSignature', 'fs_reconfirmSignature' );
 function fs_reconfirmSignature() {
     $email = $_POST['email'];
     if (
-        ! isset( $_POST['fs_nonce'] ) 
+        ! isset( $_POST['fs_nonce'] )
         || ! wp_verify_nonce( $_POST['fs_nonce'], 'fs_reconfirm_sig' )
     ) {
 
@@ -48,17 +48,17 @@ function fs_reconfirmSignature() {
         "SELECT p.ID FROM " . $wpdb->posts . " p LEFT JOIN " . $wpdb->postmeta . " m ON m.post_id=p.ID "
             . "WHERE m.meta_key='fs_signature_email' AND m.meta_value=%s AND (p.post_status='private' OR p.post_status='draft')",
             $email );
-    
+
     $id = $wpdb->get_col( $query );
     $post = get_post( $id[0], "OBJECT" );
-    
+
     if( ! $post || ! ( $post->post_status === "private" || $post->post_status === "draft" ) ) {
         echo json_encode ( array( 'error'=>'We couldn\'t find that email address. We would hate to lose contact with you, so please <a href="mailto:info@freestylecyclists.org">email us</a> so we can help sort it out.' ) );
         die;
     }
     $secret = generateRandomString();
     update_post_meta( $id[0], 'fs_signature_secret', $secret );
-    
+
     $subject = "Hello from Freestyle Cyclists";
     $headers = array();
     $headers[] = 'From: Freestyle Cyclists <info@freestylecyclists.org>';
@@ -67,7 +67,7 @@ function fs_reconfirmSignature() {
     $message .= "<P>Below is a link you can use to update the details on the petition for bicycle helmet law reform.</p>";
     $message .= "<P><a href='http://www.freestylecyclists.org/confirm?secret=" . $secret . "'>Click here to update your details on Freestyle Cyclists</a></P>";
     wp_mail( $email, $subject, $message, $headers );
-    
+
     echo json_encode ( array( 'success' => 'We have sent you a new email, you can click on the link there to update your details.' ) );
     die;
 }
@@ -87,27 +87,27 @@ function fs_confirmSignature() {
     $id = $_POST['id'];
     $secretkey = $_POST['secretkey'];
     if (
-        ! isset( $_POST['fs_nonce'] ) 
+        ! isset( $_POST['fs_nonce'] )
         || ! wp_verify_nonce( $_POST['fs_nonce'], 'fs_confirm_sig_' . $id )
     ) {
 
        echo json_encode( array( 'error'=>'Sorry, your nonce did not verify.' ) );
        die;
     }
-    
+
     $custom = get_post_custom( $id );
     if ( $secretkey !== $custom [ 'fs_signature_secret' ][0] ) {
         echo json_encode ( array ( 'error'=>'To edit or confirm a signature, you must click on a link in an email from us. You can only save once, using the link, after which you need to get a new email.'
             . '<br\><a href="' . get_site_url() . '/confirm">Click here to get a new email link</a>.' ) );
         die;
     }
-    
+
     $post = get_post( $id, "OBJECT" );
     if( ! $post ) {
         echo json_encode ( array( 'error'=>'Something has gone wrong and we weren\'t able to find and confirm your signature. We would hate to lose contact with you, so please <a href="mailto:info@freestylecyclists.org">email us</a> so we can help sort it out.' ) );
         die;
     }
-    
+
     update_post_meta( $id, 'fs_signature_public', $fs_signature_public );
     update_post_meta( $id, 'fs_signature_newsletter', $fs_signature_newsletter );
     update_post_meta( $id, 'fs_signature_country', $fs_signature_country );
@@ -135,14 +135,14 @@ function fs_newSignature() {
     $areYouThere = $_POST['areYouThere'];
     $excerpt = stripslashes($_POST['excerpt']);
     if (
-        ! isset( $_POST['fs_nonce'] ) 
-        || ! wp_verify_nonce( $_POST['fs_nonce'], 'fs_new_sig' ) 
+        ! isset( $_POST['fs_nonce'] )
+        || ! wp_verify_nonce( $_POST['fs_nonce'], 'fs_new_sig' )
     ) {
 
        echo json_encode( array( 'error'=>'Sorry, your nonce did not verify.' ) );
        die;
     }
-    
+
     if($fs_signature_email==="") {
         echo json_encode( array( 'error'=>'Please supply an email address' ) );
         die;
@@ -173,7 +173,7 @@ function fs_newSignature() {
         echo json_encode( array('error'=>'Please select your country') );
         die;
     }
-        
+
     $post_id = wp_insert_post(array(
             'post_title'=>$title,
             'post_status'=>'draft',
@@ -195,7 +195,7 @@ function fs_newSignature() {
     update_post_meta($post_id, "fs_signature_email", $fs_signature_email );
     update_post_meta($post_id, "fs_signature_public", $fs_signature_public );
     update_post_meta($post_id, "fs_signature_newsletter", $fs_signature_newsletter );
-    
+
     if(isset($_COOKIE['referrer'])) {
         $referrer = $_COOKIE['referrer'];
     } else {
@@ -213,7 +213,7 @@ function fs_newSignature() {
         $campaign = $_COOKIE['campaign'];
     }
     if($campaign) update_post_meta( $post_id, "fs_signature_campaign", substr( $campaign, 0, 255 ) );
-    
+
     $subject = "Confirm your support for Bicycle Helmet Law reform on Freestyle Cyclists";
     $headers = array();
     $headers[] = 'From: Freestyle Cyclists <info@freestylecyclists.org>';
@@ -223,7 +223,7 @@ function fs_newSignature() {
     $message .= "<P>Don't worry, we don't give your email address to anyone, and you decide whether to receive emails from us in future.</P>";
     $message .= "<P><a href='http://www.freestylecyclists.org/confirm?secret=" . $secret . "'>Click here to verify your email and make your signature count</a></P>";
     wp_mail( $fs_signature_email, $subject, $message, $headers );
-    
+
     echo json_encode( array( 'success'=>'You have successfully registered your support. Look for an email from us and click on the link to confirm your email address - until then we can\'t count you.' ) );
     die();
 }
@@ -353,7 +353,7 @@ function fs_signature_meta() {
     $meta_moderate = $custom['fs_signature_moderate'][0];
     $meta_newsletter = $custom['fs_signature_newsletter'][0];
     $meta_reminder = $custom['reminder_sent'][0];
-    
+
     echo '<input type="hidden" name="fs-signature-nonce" id="fs-signature-nonce" value="' .
         wp_create_nonce( 'fs-signature-nonce' ) . '" />';
     ?>
@@ -363,7 +363,7 @@ function fs_signature_meta() {
             <li><label>Country</label>
                 <select name="fs_signature_country">
                     <option value="">Please select</option>
-                    <?php 
+                    <?php
                     $fs_country = fs_country();
                     foreach($fs_country as $ab => $title ) { ?>
                         <option value="<?=$ab;?>"<?php echo ($meta_country===$ab ? " selected='selected'" : "") ;?>><?php echo $title;?></option>
@@ -373,7 +373,7 @@ function fs_signature_meta() {
             <li><label>State</label>
                 <select name="fs_signature_state">
                 <option value="">Please select</option>
-                <?php 
+                <?php
                 $fs_states = fs_states();
                 foreach($fs_states as $ab => $title ) { ?>
                     <option value="<?=$ab;?>"<?php echo ($meta_state===$ab ? " selected='selected'" : "") ;?>><?php echo $title;?></option>
@@ -381,7 +381,7 @@ function fs_signature_meta() {
                 </select>
             </li>
             <li><label>Newsletter</label>
-                <input type="radio" value="" name="fs_signature_newsletter" <?=($meta_newsletter==="" ? "checked" : "")?>/>Never 
+                <input type="radio" value="" name="fs_signature_newsletter" <?=($meta_newsletter==="" ? "checked" : "")?>/>Never
             </li>
             <li>
                 <label>&nbsp;</label>
@@ -401,13 +401,13 @@ function fs_signature_meta() {
             <li><label>Referrer</label><input name="fs_signature_referrer" value="<?php echo $meta_referrer; ?>" /></li>
         </ul>
     </div>
-    <?php    
+    <?php
 }
 
 add_action ('save_post', 'save_fs_signature');
- 
+
 function save_fs_signature(){
- 
+
     global $post;
 
     // - still require nonce
@@ -443,11 +443,11 @@ function save_fs_signature(){
 }
 
 add_filter('post_updated_messages', 'signature_updated_messages');
- 
+
 function signature_updated_messages( $messages ) {
- 
+
   global $post, $post_ID;
- 
+
   $messages['fs_signature'] = array(
     0 => '', // Unused. Messages start at index 1.
     1 => sprintf( __('Signature updated. <a href="%s">View item</a>'), esc_url( get_permalink($post_ID) ) ),
@@ -464,10 +464,10 @@ function signature_updated_messages( $messages ) {
       date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
     10 => sprintf( __('Signature draft updated. <a target="_blank" href="%s">Preview signature</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
   );
- 
+
   return $messages;
 }
-/* 
+/*
  * returns list of states for use wherever
  */
 function fs_states() {
@@ -482,7 +482,7 @@ function fs_states() {
         "NT"=>"Northern Territory",
     );
 }
-/* 
+/*
  * list of countries
  */
 function fs_country() {
@@ -726,21 +726,21 @@ function fs_country() {
         "ZW"=>"Zimbabwe",
     );
 }
-/* 
+/*
  * showing sigs to the public - called from ajax wrapper and also when loading page initially
  */
 function get_sigs( $first_sig, $rows_per_page ){
     global $wpdb;
     $fs_country = fs_country();
-    $query = $wpdb->prepare ( 
-        "SELECT p.post_title, p.post_excerpt, p.ID, pmc.meta_value AS country, pms.meta_value AS state, pmp.meta_value AS public, pmm.meta_value as moderate, pmr.meta_value as registered from " . 
+    $query = $wpdb->prepare (
+        "SELECT p.post_title, p.post_excerpt, p.ID, pmc.meta_value AS country, pms.meta_value AS state, pmp.meta_value AS public, pmm.meta_value as moderate, pmr.meta_value as registered from " .
         $wpdb->posts . " p" .
-        " LEFT JOIN " . $wpdb->postmeta . " pmc ON pmc.post_id=p.ID AND pmc.meta_key='fs_signature_country'" . 
+        " LEFT JOIN " . $wpdb->postmeta . " pmc ON pmc.post_id=p.ID AND pmc.meta_key='fs_signature_country'" .
         " LEFT JOIN " . $wpdb->postmeta . " pms ON pms.post_id=p.ID AND pms.meta_key='fs_signature_state'" .
         " LEFT JOIN " . $wpdb->postmeta . " pmp ON pmp.post_id=p.ID AND pmp.meta_key='fs_signature_public'" .
         " LEFT JOIN " . $wpdb->postmeta . " pmm ON pmm.post_id=p.ID AND pmm.meta_key='fs_signature_moderate'" .
         " LEFT JOIN " . $wpdb->postmeta . " pmr ON pmr.post_id=p.ID AND pmr.meta_key='fs_signature_registered'" .
-        " WHERE p.post_type='fs_signature' AND p.`post_status`='private' ORDER BY registered DESC LIMIT %d,%d", $first_sig, $rows_per_page 
+        " WHERE p.post_type='fs_signature' AND p.`post_status`='private' ORDER BY registered DESC LIMIT %d,%d", $first_sig, $rows_per_page
     );
     $rows = $wpdb->get_results ( $query );
     $output = array();
@@ -813,8 +813,8 @@ function enqueue_signature_confirm_script() {
 }
 function fs_signature_confirm () {
     global $add_signature_confirm_script;
-    $add_signature_confirm_script = true;   
-    
+    $add_signature_confirm_script = true;
+
     $secret = $_GET['secret'];
     $email = $_GET['email'];
     global $wpdb;
@@ -843,7 +843,7 @@ function fs_signature_confirm () {
         }
     }
     ob_start();
-    if( ! $found ) { 
+    if( ! $found ) {
         if( $secret ) { ?>
             <P>Sorry, the secret code doesn't match our records and we can't confirm your email.</P>
             <P>The link in our original email to you only works once.  If you would like to change your email preferences, enter your email address here, and we will send you a fresh email, with a link that will enable you to update your details.</P>
@@ -916,7 +916,7 @@ function fs_signature_confirm () {
     <?php if ( ! $update ) {
        add_action( 'wp_footer', 'fs_signatures_conversion' );
     }
-    
+
     return ob_get_clean();
 }
 add_shortcode('confirm', 'fs_signature_confirm' );
@@ -940,7 +940,7 @@ function fs_signatures_conversion() { ?>
             <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1000718227/?label=UPP5CJz5414Qk_-W3QM&amp;guid=ON&amp;script=0"/>
         </div>
         </noscript>
-<?php }        
+<?php }
 /*
  * Shortcode for displaying signatures, paginated
  */
@@ -967,18 +967,18 @@ function enqueue_signature_signatures_script() {
 function fs_signature_signatures (  ) {
     global $add_signature_signatures_script;
     $add_signature_signatures_script = true;
-    
+
     $rows_per_page = 15;
     $sigs = get_sigs( 0, $rows_per_page ); // first lot of sigs are loaded with the page
-    
+
     /* get sub-totals */
     global $wpdb;
     $NZ = $wpdb->get_row(
-            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\" 
+            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\"
                 WHERE post_type=\"fs_signature\" AND m.meta_value=\"NZ\" AND p.`post_status`=\"private\""
             );
     $AU = $wpdb->get_row(
-            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\" 
+            "SELECT COUNT(*) as count FROM wpfreepp_posts p LEFT JOIN wpfreepp_postmeta m ON p.ID=m.`post_id` AND m.meta_key=\"fs_signature_country\"
                 WHERE post_type=\"fs_signature\" AND m.meta_value=\"AU\" AND p.`post_status`=\"private\""
             );
     $totals = array(
@@ -996,7 +996,7 @@ function fs_signature_signatures (  ) {
     }
     ob_start();
     ?>
-        
+
     <div class="row" ng-app="signaturesApp" ng-controller="signaturesCtrl">
             <UL id="webticker">
                 <?php
@@ -1005,7 +1005,7 @@ function fs_signature_signatures (  ) {
                 }
                 ?>
             </UL>
-        
+
         <script type="text/javascript">
             _sigs = <?=json_encode($sigs)?>;
             _totals = <?=json_encode($totals)?>;
@@ -1042,7 +1042,7 @@ function fs_signature_signatures (  ) {
         <div id="ajax-loading" ng-class="{'farleft':!showLoading}"><img src="<?php echo get_site_url();?>/wp-includes/js/thickbox/loadingAnimation.gif" ng-cloak></div>
 
         <?php
-        // pagination adapted from http://sgwordpress.com/teaches/how-to-add-wordpress-pagination-without-a-plugin/                    
+        // pagination adapted from http://sgwordpress.com/teaches/how-to-add-wordpress-pagination-without-a-plugin/
         ?>
         <div ng-hide="data.pages===1" class="pagination" ng-cloak>
             <span>Page {{paged}} of {{data.pages}}</span>
@@ -1062,12 +1062,12 @@ function fs_signature_signatures (  ) {
     return ob_get_clean();
 }
 add_shortcode('signatures', 'fs_signature_signatures' );
-/* 
+/*
  * Shortcode for signature submission form
  */
 function register_signature_register_script() {
     wp_register_script('signature', plugins_url( 'js/signature.js' , __FILE__ ), 'jquery');
-    wp_register_style('fs-signature-styles', plugins_url( 'css/style.css', __FILE__ ) );	
+    wp_register_style('fs-signature-styles', plugins_url( 'css/style.css', __FILE__ ) );
 }
 function enqueue_signature_register_script() {	// support for signup form, which appears on two pages and in a popup
     global $add_signature_register_script;
@@ -1077,17 +1077,17 @@ function enqueue_signature_register_script() {	// support for signup form, which
 }
 add_action('init', 'register_signature_register_script' );
 add_action( 'wp_footer', 'enqueue_signature_register_script' );
-function fs_page_sign ( $atts ) { 
+function fs_page_sign ( $atts ) {
     global $add_signature_register_script;
     $add_signature_register_script = true;
-    
+
     $a = shortcode_atts( array(
         'narrow' => '0',
         'popup' => '0',
     ), $atts );
     $narrow = $a['narrow']==='1';
     $popup = $a['popup']==='1';
-    
+
     ob_start() ?>
 
     <form name="register<?=($popup ? "_popup" : "");?>">
@@ -1151,32 +1151,13 @@ function fs_signatures_enqueue_scripts(  ) {
 }
 add_action( 'admin_enqueue_scripts', 'fs_signatures_enqueue_scripts' );
 /*
- * set cookies for referrer and campaign
- */
-add_action( 'init', 'fs_signature_head_cookies' );
-function fs_signature_head_cookies() {
-    if(isset($_COOKIE['referrer'])) {
-        $referrer = $_COOKIE['referrer'];
-    } else {
-        $referrer = $_SERVER['HTTP_REFERER'];
-        setcookie('referrer', $referrer, 0, '/' );
-    }
-
-    if( isset($_GET['campaign']) ) {
-        $campaign = $_GET['campaign'];
-        setcookie('campaign', $campaign, 0, '/');
-    } else if(isset($_COOKIE['campaign'])) {
-        $campaign = $_COOKIE['campaign'];
-    }
-}
-/*
  * quick edit enhancements
  * http://codex.wordpress.org/Plugin_API/Action_Reference/quick_edit_custom_box
  */
 add_action( 'quick_edit_custom_box', 'fs_signatures_quickedit', 10, 2 );
 
 function fs_signatures_quickedit( $column_name, $post_type ) {
-    
+
     if ( $post_type !== "fs_signature") {
         return;
     }
@@ -1191,7 +1172,7 @@ function fs_signatures_quickedit( $column_name, $post_type ) {
     <fieldset class="inline-edit-col-rightk">
       <div class="inline-edit-col column-<?php echo $column_name ?>">
         <label class="inline-edit-group">
-        <?php 
+        <?php
          switch ( $column_name ) {
          case 'fs_col_moderate':
              ?><span class="title">Moderated</span><input type="checkbox" name="moderated" value="y"/><?php
@@ -1258,7 +1239,7 @@ function save_signature_meta( $post_id ) {
 function cf_search_join( $join ) {
     global $wpdb;
 
-    if ( is_search() ) {    
+    if ( is_search() ) {
         $join .=' LEFT JOIN '.$wpdb->postmeta. ' ON '. $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
     }
 
