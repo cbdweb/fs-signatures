@@ -394,9 +394,6 @@ function fs_signature_meta() {
             <li><label>Reminder sent:</label>
                 <input type='checkbox' value='1' name='reminder_sent' <?=$meta_reminder==1 ? "CHECKED" : ""; ?> />
             </li>
-            <li>
-                <?=do_shortcode( '[ FC_captcha_fields width=”200″ height=”30″ ]');?>
-            </li>
             <li><label>Email</label><input name="fs_signature_email" value="<?php echo $meta_email; ?>" /></li>
             <li><label>Show name</label><input name="fs_signature_public" value="<?php echo $meta_public; ?>" /> (enter "y" or blank)</li>
             <li><label>Registered</label><input name="fs_signature_registered" value="<?php echo $meta_registered; ?>" />(yyyy-mm-dd)</li>
@@ -1124,6 +1121,7 @@ function fs_page_sign ( $atts ) {
 
             <tr><td class="leftcol"><input id="simpleTuring<?=($popup ? "_popup" : "");?>" name="areYouThere" type="checkbox" value="y" class="inputc"></td><td class="medfont">Tick this box to show you are not a robot</td></tr>
             <tr><td class="leftcol">Comment:</td><td class="rightcol"><textarea name="excerpt" class="inputc"></textarea><br><div class="smallfont">Comments are subject to moderation</div></td></tr>
+            <tr><td colspan="2"><?=do_shortcode( '[ FC_captcha_fields width=”200″ height=”30″ ]');?></td> </tr>
             <tr><td colspan="2"><button type="button" id="saveButton<?=($popup ? "_popup" : "");?>">Save</button></td></tr>
             <tr><td colspan="2"><div id="ajax-loading<?=($popup ? "_popup" : "");?>" class="farleft"><img src="<?php echo get_site_url();?>/wp-includes/js/thickbox/loadingAnimation.gif"></div></td></tr>
             <tr><td colspan="2"><div id="returnMessage<?=($popup ? "_popup" : "");?>"></div></td></tr>
