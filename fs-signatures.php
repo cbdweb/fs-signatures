@@ -394,6 +394,9 @@ function fs_signature_meta() {
             <li><label>Reminder sent:</label>
                 <input type='checkbox' value='1' name='reminder_sent' <?=$meta_reminder==1 ? "CHECKED" : ""; ?> />
             </li>
+            <li>
+                <?=do_shortcode( '[ FC_captcha_fields width=”200″ height=”30″ ]');?>
+            </li>
             <li><label>Email</label><input name="fs_signature_email" value="<?php echo $meta_email; ?>" /></li>
             <li><label>Show name</label><input name="fs_signature_public" value="<?php echo $meta_public; ?>" /> (enter "y" or blank)</li>
             <li><label>Registered</label><input name="fs_signature_registered" value="<?php echo $meta_registered; ?>" />(yyyy-mm-dd)</li>
