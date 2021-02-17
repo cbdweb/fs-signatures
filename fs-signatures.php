@@ -1124,7 +1124,7 @@ function fs_page_sign ( $atts ) {
                 <?php } ?>
             </select></td></tr>
             <tr><td colspan="2"><?do_shortcode( ['anr-captcha'] )?></td></tr>
-            <tr><td class="leftcol">2+3=</td><td class="rightcol"><td class="rightcol"><input<?=($narrow || $popup) ? " class='smallinput'" : "";?></td></tr>
+            <tr><td class="leftcol">2+3=</td><td class="rightcol"><input<?=($narrow || $popup) ? " class='smallinput'" : "";?> type="text" name="arithmetic" id="name<?=($popup ? "_popup" : "");?>"></td></tr>
             <tr><td class="leftcol">Comment:</td><td class="rightcol"><textarea name="excerpt" class="inputc"></textarea><br><div class="smallfont">Comments are subject to moderation</div></td></tr>
             <tr><td colspan="2"><button type="button" id="saveButton<?=($popup ? "_popup" : "");?>">Save</button></td></tr>
             <tr><td colspan="2"><div id="ajax-loading<?=($popup ? "_popup" : "");?>" class="farleft"><img src="<?php echo get_site_url();?>/wp-includes/js/thickbox/loadingAnimation.gif"></div></td></tr>
