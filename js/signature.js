@@ -18,12 +18,14 @@ jQuery(document).ready(function($){
     $('#saveButton'+str).bind('click', function (event) {
         var err = false;
         var errmsg = "";
+/*
         var field = $('#simpleTuring'+str);
         if(field && !field.prop("checked") ) {
           errmsg += 'You must tick the box that asks if you are not a robot.\n';
           if(!err) field.focus();
           err = true;
         }
+*/
         field = $('#email'+str);
         if(!checkEmail(field.val())) {
           errmsg += 'You must provide a valid email address.\n';
