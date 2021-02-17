@@ -166,6 +166,9 @@ function fs_newSignature() {
         echo json_encode( array('error'=>'Please tick the box to show you are not a robot') );
         die;
     }
+    if( ! anr_verify_captcha() ){
+        echo json_encode( ['error'=>'Captcha not completed correctly']);
+    }
     if( $title==="" ) {
         $fs_signature_public = false;
     }
