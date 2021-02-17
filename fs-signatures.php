@@ -132,7 +132,8 @@ function fs_newSignature() {
     $fs_signature_newsletter = $_POST['fs_signature_newsletter'];
     $fs_signature_country = $_POST['fs_signature_country'];
     $fs_signature_state = $_POST['fs_signature_state'];
-    $areYouThere = $_POST['areYouThere'];
+    //$areYouThere = $_POST['areYouThere'];
+    $arithmetic = $_POST['arithmetic'];
     $excerpt = stripslashes($_POST['excerpt']);
     if (
         ! isset( $_POST['fs_nonce'] )
@@ -162,12 +163,13 @@ function fs_newSignature() {
             . '<a href=\'' . $link . ( $hasQS ? '&' : '?') . 'email=' . $fs_signature_email . '\'>Click here to get an email to update your entry' ) );
         die;
     }
-    if( $areYouThere !== "y" ) {
+    /*if( $areYouThere !== "y" ) {
         echo json_encode( array('error'=>'Please tick the box to show you are not a robot') );
         die;
-    }
-    if( ! anr_verify_captcha() ){
-        echo json_encode( ['error'=>'Captcha not completed correctly']);
+    }*/
+    if( trim($arithmetic) != "5") {
+        echo json_encode(['error' => 'Please do the arithmetic sum']);
+        die;
     }
     if( $title==="" ) {
         $fs_signature_public = false;
@@ -1122,7 +1124,7 @@ function fs_page_sign ( $atts ) {
                 <?php } ?>
             </select></td></tr>
             <tr><td colspan="2"><?do_shortcode( ['anr-captcha'] )?></td></tr>
-            <tr><td class="leftcol"><input id="simpleTuring<?=($popup ? "_popup" : "");?>" name="areYouThere" type="checkbox" value="y" class="inputc"></td><td class="medfont">Tick this box to show you are not a robot</td></tr>
+            <tr><td class="leftcol">2+3=</td><td class="rightcol"><td class="rightcol"><input<?=($narrow || $popup) ? " class='smallinput'" : "";?></td></tr>
             <tr><td class="leftcol">Comment:</td><td class="rightcol"><textarea name="excerpt" class="inputc"></textarea><br><div class="smallfont">Comments are subject to moderation</div></td></tr>
             <tr><td colspan="2"><button type="button" id="saveButton<?=($popup ? "_popup" : "");?>">Save</button></td></tr>
             <tr><td colspan="2"><div id="ajax-loading<?=($popup ? "_popup" : "");?>" class="farleft"><img src="<?php echo get_site_url();?>/wp-includes/js/thickbox/loadingAnimation.gif"></div></td></tr>
